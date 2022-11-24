@@ -162,3 +162,5 @@ sudo echo "@reboot apt update && apt upgrade -y && apt autoremove -y" > cronLine
 sudo crontab cronLines
 
 sudo rm -f cronLines
+
+sudo reboot
