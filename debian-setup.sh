@@ -80,7 +80,10 @@ sudo apt autoremove -y
 
 #Install Packages
 sudo apt install git htop protonvpn deb.torproject.org-keyring tor torbrowser-launcher sublime-text tightvncserver ntfs-3g htop gparted xarchiver mupdf nodejs npm firefox gimp libreoffice pulseaudio pavucontrol paprefs bluetooth pulseaudio-module-bluetooth blueman bluez-firmware smplayer nomacs redshift redshift-gtk piper -y
+
 sudo /sbin/modprobe iwlwifi
+
+sudo git config --global credential.helper store
 
 # Update System
 sudo apt update -y
