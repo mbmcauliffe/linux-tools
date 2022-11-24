@@ -9,7 +9,7 @@ linuxDrive=$(findmnt -n /run/live/medium | awk '{print $2}' | rev | cut -c2- | r
 numPartitions=$(sudo partx -g $linuxDrive | wc -l)
 
 # Complete actions if the current Linux instance is a Live-Boot
-if [ "$linuxDrive" != "mmcblk0" ]
+if [ "$linuxDrive" != "mmcblk0" && "$linuxDrive" != "nvme0n1"]
 then
 
 	# Create and set up a persistent partition if one does not exist
@@ -47,7 +47,7 @@ then
 fi
 
 # Security Actions
-/etc/ssh/dpkg-reconfigure openssh-server
+sudo /etc/ssh/dpkg-reconfigure openssh-server
 rootPassword=$(openssl rand -hex 12)
 sudo passwd root <<< $(printf "$rootPassword\n$rootPassword")
 
@@ -55,22 +55,22 @@ sudo passwd root <<< $(printf "$rootPassword\n$rootPassword")
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt autoremove -y
-timedatectl set-timezone America/Chicago
+sudo timedatectl set-timezone America/Chicago
 
 #Install Packages
-sudo apt install git gnupg gnupg2 gnupg1
+sudo apt install git gnupg gnupg2 gnupg1 -y
 
 # Add TOR to APT Repository List
-wget -O- https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --dearmor | sudo tee /usr/share/keyrings/tor.gpg > /dev/null
-printf 'deb [signed-by=/usr/share/keyrings/tor.gpg] https://deb.torproject.org/torproject.org stretch main
+sudo wget -O- https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --dearmor | sudo tee /usr/share/keyrings/tor.gpg > /dev/null
+sudo printf 'deb [signed-by=/usr/share/keyrings/tor.gpg] https://deb.torproject.org/torproject.org stretch main
 deb-src [signed-by=/usr/share/keyrings/tor.gpg] https://deb.torproject.org/torproject.org stretch main' | sudo tee /etc/apt/sources.list.d/tor.list > /dev/null
 
 # Add Sublime Text to APT Repository List
-wget -O- https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/sublime.gpg > /dev/null
-printf 'deb [signed-by=/usr/share/keyrings/sublime.gpg] https://download.sublimetext.com/ apt/stable/' | sudo tee /etc/apt/sources.list.d/sublime-text.list > /dev/null
+sudo wget -O- https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/sublime.gpg > /dev/null
+sudo printf 'deb [signed-by=/usr/share/keyrings/sublime.gpg] https://download.sublimetext.com/ apt/stable/' | sudo tee /etc/apt/sources.list.d/sublime-text.list > /dev/null
 
 # Download and install ProtonVPN Repo
-wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/ -r --no-parent -A 'protonvpn-stable-release*.deb' --no-directories -P /tmp/
+sudo wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/ -r --no-parent -A 'protonvpn-stable-release*.deb' --no-directories -P /tmp/
 sudo apt install /tmp/protonvpn-stable-release*.deb
 
 # Update System
@@ -79,8 +79,8 @@ sudo apt upgrade -y
 sudo apt autoremove -y
 
 #Install Packages
-sudo apt install git htop protonvpn deb.torproject.org-keyring tor torbrowser-launcher sublime-text tightvncserver ntfs-3g htop gparted xarchiver mupdf nodejs npm firefox-esr gimp libreoffice pulseaudio pavucontrol paprefs bluetooth pulseaudio-module-bluetooth blueman bluewho bluez-firmware smplayer nomacs redshift redshift-gtk piper -y
-/sbin/modprobe iwlwifi
+sudo apt install git htop protonvpn deb.torproject.org-keyring tor torbrowser-launcher sublime-text tightvncserver ntfs-3g htop gparted xarchiver mupdf nodejs npm firefox gimp libreoffice pulseaudio pavucontrol paprefs bluetooth pulseaudio-module-bluetooth blueman bluez-firmware smplayer nomacs redshift redshift-gtk piper -y
+sudo /sbin/modprobe iwlwifi
 
 # Update System
 sudo apt update -y
@@ -146,15 +146,15 @@ VPN:
 	ProtonVPN
 
 Logitech Keyboard and Mouse Control:
-	piper' >> ~/Desktop/ReadMe.txt
+	piper' > ~/Desktop/ReadMe.txt
 
 # Initialize Crontab
-crontab -l > cronLines
+sudo crontab -l > cronLines
 
 # Write to Crontab
-echo "@reboot apt update && apt upgrade -y && apt autoremove -y" >> cronLines
+sudo echo "@reboot apt update && apt upgrade -y && apt autoremove -y" > cronLines
 
 # Save Crontab
-crontab cronLines
+sudo crontab cronLines
 
-sudo reboot
+sudo rm -f cronLines
