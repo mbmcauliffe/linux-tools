@@ -73,13 +73,18 @@ sudo printf 'deb [signed-by=/usr/share/keyrings/sublime.gpg] https://download.su
 sudo wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/ -r --no-parent -A 'protonvpn-stable-release*.deb' --no-directories -P /tmp/
 sudo apt install /tmp/protonvpn-stable-release*.deb
 
+# Add Spotify to APT Repository List
+curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo gpg --dearmor -o /usr/share/keyrings/spotify-archive-keyring.gpg
+echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+
+
 # Update System
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt autoremove -y
 
 #Install Packages
-for i in git htop protonvpn deb.torproject.org-keyring tor torbrowser-launcher sublime-text lxterminal tightvncserver ntfs-3g htop gparted xarchiver mupdf nodejs npm firefox gimp libreoffice pulseaudio pavucontrol paprefs bluetooth pulseaudio-module-bluetooth blueman bluez-firmware smplayer nomacs redshift redshift-gtk piper; do apt install -y $i; done
+for i in git htop protonvpn deb.torproject.org-keyring tor torbrowser-launcher sublime-text lxterminal tightvncserver spotify-client ntfs-3g htop gparted xarchiver mupdf nodejs npm firefox gimp libreoffice pulseaudio pavucontrol paprefs bluetooth pulseaudio-module-bluetooth blueman bluez-firmware smplayer nomacs redshift redshift-gtk piper; do apt install -y $i; done
 
 sudo /sbin/modprobe iwlwifi
 
