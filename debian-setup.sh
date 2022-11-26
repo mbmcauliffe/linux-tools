@@ -74,8 +74,8 @@ sudo wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/ -r --n
 sudo apt install /tmp/protonvpn-stable-release*.deb
 
 # Add Spotify to APT Repository List
-curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo gpg --dearmor -o /usr/share/keyrings/spotify-archive-keyring.gpg
-echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo gpg --dearmor -o /usr/share/keyrings/spotify-archive-keyring.gpg
+sudo printf 'deb [signed-by=/usr/share/keyrings/spotify-archive-keyring.gpg] http://repository.spotify.com stable non-free' | sudo tee /etc/apt/sources.list.d/spotify.list >/dev/null
 
 
 # Update System
