@@ -84,7 +84,8 @@ for i in git htop protonvpn deb.torproject.org-keyring tor torbrowser-launcher s
 sudo /sbin/modprobe iwlwifi
 
 # Configure git to store credentials as plain-text
-sudo git config --global credential.helper store
+# Sudo applies the config to root, not the user
+git config --global credential.helper store
 
 # Update System
 sudo apt update -y
