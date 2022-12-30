@@ -171,4 +171,7 @@ sudo crontab cronLines
 
 sudo rm -f cronLines
 
+echo "Installation Complete: Press enter to reboot."
+read nullPointer
+
 sudo reboot
